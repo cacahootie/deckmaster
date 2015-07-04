@@ -1,8 +1,10 @@
 {
     "styles": [
-        "/static/style.css"
+        "static/style.css"
     ],
     "scripts": [
-        "/static/script.js"
+        "static/script.js",
+        {"bower":"d3"},
+        {"bower":"leaflet"}
     ]
 }
