@@ -15,4 +15,4 @@ app = Flask(
 
 from index import index
 
-Flask.add_url_rule('/', index)
+app.add_url_rule('/', 'index', index)
