@@ -1,6 +1,7 @@
 # deckmaster
 
-Jinja2 templating as a service.
+Provide compiled HTML, static assets and templated cards from `site.json`, with
+a development server and deployment compiler (planned).
 
 Installation
 ==============
