@@ -18,6 +18,7 @@ except OSError:
 	pass
 
 class TestIndex(unittest.TestCase):
+	"""Test the basic dynamic generation of the index page."""
 
     def setUp(self):
         app.config['TESTING'] = True
@@ -26,12 +27,8 @@ class TestIndex(unittest.TestCase):
     def get_index_soup(self):
     	return BeautifulSoup(self.app.get('/').data, 'html.parser')
 
-    def local(self, scriptdef):
-    	if isinstance(scriptdev, basestring):
-    		return True
-    	return False
-
     def test_scripts_loaded(self):
+    	"""Does the number of script elements match `site.json`?"""
     	cfg = json.load(open('site.json'))
     	soup = self.get_index_soup()
     	self.assertEqual(
@@ -40,6 +37,7 @@ class TestIndex(unittest.TestCase):
     	)
 
     def test_scripts_200(self):
+    	"""Are each of the scripts available?"""
 		soup = self.get_index_soup()
 		for script in soup.find_all('script'):
 			self.app.get(script['src'])
