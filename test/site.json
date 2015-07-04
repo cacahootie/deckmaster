@@ -1,0 +1,8 @@
+{
+    "styles": [
+        "/static/style.css"
+    ],
+    "scripts": [
+        "/static/script.js"
+    ]
+}

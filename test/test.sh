@@ -1,1 +1,1 @@
-python ../deckmaster/run
+python ../deckmaster/deckmaster
