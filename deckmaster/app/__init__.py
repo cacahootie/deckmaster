@@ -13,4 +13,6 @@ app = Flask(
         os.path.abspath(os.path.dirname(__file__)),'templates')
 )
 
-import index
+from index import index
+
+Flask.add_url_rule('/', index)

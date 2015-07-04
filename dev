@@ -1,2 +1,2 @@
-cd ./test
+cd ./tests
 python ../deckmaster/deckmaster
