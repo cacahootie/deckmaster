@@ -3,7 +3,7 @@ deckmaster
 ------------
 Deckmaster is a server which can provide static assets via jinja2 templating.
 """
-from setuptools import setup
+from setuptools import setup, find_packages
 from pip.req import parse_requirements
 
 install_reqs = parse_requirements('requirements.txt')
@@ -19,7 +19,7 @@ setup(
     author_email='brad.alan.smith@gmail.com',
     description='Serving static assets to support SPA using Flask and Jinja2.',
     long_description=__doc__,
-    packages=['deckmaster',],
+    packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
     platforms='any',
@@ -36,8 +36,5 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
-    entry_points='''
-        [console_scripts]
-        flask=flask.cli:main
-    '''
+    scripts=['deckmaster/deckmaster']
 )
