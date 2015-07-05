@@ -43,4 +43,5 @@ if __name__ == "__main__":
     app.config['WORKDIR'] = os.path.abspath(args.workdir)
     if args.workdir is not None:
         print working_directory_stmt % app.config['WORKDIR']
+    print '\n'
     app.run()
