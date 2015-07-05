@@ -1,1 +1,1 @@
-./test && git push
+./test > /dev/null && git push
