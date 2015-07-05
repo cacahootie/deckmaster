@@ -46,8 +46,11 @@ def process_script(script):
 def process_site():
     """Process `site.json` based on the config and CLI options."""
     site = json.load(open('site.json'))
-    try:
+    if '/' in site:
+        retval = {}
+        retval['scripts'] = [process_script(x) for x in site['/']['scripts']]
+        retval['styles'] = site['/']['styles']
+        return retval
+    if 'scripts' in site:
         site['scripts'] = [process_script(x) for x in site['scripts']]
-    except KeyError:
-        pass
     return site

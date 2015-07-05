@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd ./tests
-../deckmaster/deckmaster -p 8000
+cd ./tests/test_multi
+../../deckmaster/deckmaster -p 5000
