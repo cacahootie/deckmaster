@@ -4,7 +4,10 @@ import os
 import json
 import subprocess
 
-from app import app
+try:
+    from app import app
+except ImportError:
+    from deckmaster.app import app
 
 component_dir = 'static/components'
 bower_str = 'bower install --config.directory="%s" %s'
@@ -42,7 +45,7 @@ def process_script(script):
 
 def process_site():
     """Process `site.json` based on the config and CLI options."""
-    if app.config['WORKDIR']:
+    if app.config.get('WORKDIR'):
         site = json.load(open(os.path.join(app.config['WORKDIR'], 'site.json')))
     else:
         site = json.load(open('site.json'))
