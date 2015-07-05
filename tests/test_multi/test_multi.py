@@ -40,7 +40,7 @@ class TestIndex(unittest.TestCase):
     	soup = self.get_index_soup()
     	self.assertEqual(
     		len(list(soup.find_all('script'))),
-    		len(cfg['scripts'])
+    		len(cfg['/']['scripts'])
     	)
 
     def test_scripts_200(self):
