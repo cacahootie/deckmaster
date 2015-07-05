@@ -6,6 +6,9 @@ import json
 
 from bs4 import BeautifulSoup
 
+# The tool relies on the cwd, this helps support nose from project root.
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 sys.path.append('..')
 
 from deckmaster import app
