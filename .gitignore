@@ -59,5 +59,6 @@ target/
 .vagrant
 
 test/static/components
+tests/static/components
 
 *.sublime-*
