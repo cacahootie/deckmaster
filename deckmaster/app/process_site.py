@@ -10,7 +10,7 @@ except ImportError:
     from deckmaster.app import app
 
 component_dir = 'static/components'
-bower_str = 'bower install --config.directory="%s" %s'
+bower_str = 'bower install --config.directory="%s" %s > /dev/null'
 
 def get_pkg_dir(package):
     """Join the component and package directory."""
