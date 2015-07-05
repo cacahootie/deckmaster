@@ -48,6 +48,7 @@ Simple example, serves only an index route of styles and scripts:
     "scripts": [
         "static/script.js",
         {"bower":"d3"},
+        {"bower":"leaflet-css"},
         {"bower":"leaflet"}
     ]
 }

@@ -5,6 +5,7 @@
     "scripts": [
         "static/script.js",
         {"bower":"d3"},
+        {"bower":"leaflet-css"},
         {"bower":"leaflet"}
     ]
 }
