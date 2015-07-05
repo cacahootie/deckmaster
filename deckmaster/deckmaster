@@ -40,8 +40,12 @@ if __name__ == "__main__":
     print brk
     if args.debug:
         print debug_log_stmt
-    app.config['WORKDIR'] = os.path.abspath(args.workdir)
+    try:
+        app.config['WORKDIR'] = os.path.abspath(args.workdir)
+    except AttributeError:
+        app.config['WORKDIR'] = None
     if args.workdir is not None:
+        os.chdir(app.config['WORKDIR'])
         print working_directory_stmt % app.config['WORKDIR']
     print '\n'
     app.run()

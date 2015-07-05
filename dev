@@ -1,3 +1,4 @@
 #!/bin/bash
 
-./deckmaster/deckmaster --workdir ./tests
+cd ./tests
+../deckmaster/deckmaster

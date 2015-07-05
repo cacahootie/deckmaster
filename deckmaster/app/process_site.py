@@ -45,10 +45,7 @@ def process_script(script):
 
 def process_site():
     """Process `site.json` based on the config and CLI options."""
-    if app.config.get('WORKDIR'):
-        site = json.load(open(os.path.join(app.config['WORKDIR'], 'site.json')))
-    else:
-        site = json.load(open('site.json'))
+    site = json.load(open('site.json'))
     try:
         site['scripts'] = [process_script(x) for x in site['scripts']]
     except KeyError:
