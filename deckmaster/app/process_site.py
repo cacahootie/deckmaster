@@ -1,4 +1,4 @@
-"""Process `site.json` """
+"""Process `site.json` and bower package tools."""
 
 import os
 import json
@@ -26,6 +26,7 @@ def get_pkg_main(package):
     return os.path.join(get_pkg_dir(package), pkg['main'])
 
 def check_pkg(package):
+    """CHeck if the package exists, if not use bower to install."""
     if not os.path.exists(os.path.join(component_dir, package)):
         subprocess.call(
             bower_str % (component_dir, package),
@@ -34,11 +35,13 @@ def check_pkg(package):
     return get_pkg_main(package)
 
 def process_script(script):
+    """Process script element in the config for local vs bower components."""
     if 'bower' in script:
         return check_pkg(script['bower'])
     return script
 
 def process_site():
+    """Process `site.json` based on the config and CLI options."""
     if app.config['WORKDIR']:
         site = json.load(open(os.path.join(app.config['WORKDIR'], 'site.json')))
     else:

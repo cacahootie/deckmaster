@@ -1,3 +1,5 @@
+"""Test the basic `site.json` configuration of an `index.html` route."""
+
 import os
 import shutil
 import sys
@@ -7,14 +9,16 @@ import json
 from bs4 import BeautifulSoup
 
 # The tool relies on the cwd, this helps support nose from project root.
+# Does not use CLI tool.
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+# This will now also be relative to the file, not the shell cwd.
 sys.path.append('..')
 
 from deckmaster import app
 app = app.app
 
-# Clear the loaded components, but only once is necessary
+# Clear the loaded components, but only once
 try:
     shutil.rmtree('./static/components')
 except OSError:
