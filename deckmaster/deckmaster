@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """Run deckmaster from the current dir."""
 import os
+import argparse
 
 try:
 	from app import app
@@ -8,6 +9,38 @@ except ImportError:
 	from deckmaster import app
 	app = app.app
 
+brk = """
+********************************************************************************
+"""
+
+debug_log_stmt = "RUNNING IN DEBUG MODE"
+working_directory_stmt = "WORKING IN DIRECTORY %s"
+
 if __name__ == "__main__":
-    app.config['DEBUG'] = True
+
+    parser = argparse.ArgumentParser(
+        description='Serve bower packages and local assets.',
+    )
+    parser.add_argument('--no-debug','-N',
+        dest='debug',
+        action='store_false',
+        help="don't show debugger on exception or reload on file update",
+    )
+    parser.add_argument('--workdir','-w',
+        dest='workdir',
+        nargs='?',
+        type=str,
+        help='specify a working directory other than current directory',
+        default=None
+    )
+
+    args = parser.parse_args()
+
+    app.config['DEBUG'] = args.debug
+    print brk
+    if args.debug:
+        print debug_log_stmt
+    app.config['WORKDIR'] = os.path.abspath(args.workdir)
+    if args.workdir is not None:
+        print working_directory_stmt % app.config['WORKDIR']
     app.run()

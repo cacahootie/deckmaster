@@ -4,6 +4,8 @@ import os
 import json
 import subprocess
 
+from app import app
+
 component_dir = 'static/components'
 bower_str = 'bower install --config.directory="%s" %s'
 
@@ -37,7 +39,10 @@ def process_script(script):
     return script
 
 def process_site():
-    site = json.load(open('site.json'))
+    if app.config['WORKDIR']:
+        site = json.load(open(os.path.join(app.config['WORKDIR'], 'site.json')))
+    else:
+        site = json.load(open('site.json'))
     try:
         site['scripts'] = [process_script(x) for x in site['scripts']]
     except KeyError:

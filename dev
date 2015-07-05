@@ -1,2 +1,1 @@
-cd ./tests
-python ../deckmaster/deckmaster
+./deckmaster/deckmaster --workdir ./tests
