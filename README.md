@@ -33,8 +33,22 @@ Here's some more detail on the CLI options for deckmaster:
 	                        specify a working directory other than current
 	                        directory
 
-Development
+`site.json`
 =============
 
-A vagrant box is included in this setup, mostly to test the installation of
-the package itself without sullying one's own path.
+Provides the structure of the assets served by deckmaster.
+
+Simple example, serves only an index route of styles and scripts:
+
+```javascript	
+{
+    "styles": [
+        "static/style.css"
+    ],
+    "scripts": [
+        "static/script.js",
+        {"bower":"d3"},
+        {"bower":"leaflet"}
+    ]
+}
+```
