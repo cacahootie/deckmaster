@@ -33,6 +33,13 @@ if __name__ == "__main__":
         help='specify a working directory other than current directory',
         default=None
     )
+    parser.add_argument('--port','-p',
+        dest='port',
+        nargs='?',
+        type=int,
+        help='port to serve from',
+        default=None
+    )
 
     args = parser.parse_args()
 
@@ -48,4 +55,4 @@ if __name__ == "__main__":
         os.chdir(app.config['WORKDIR'])
         print working_directory_stmt % app.config['WORKDIR']
     print '\n'
-    app.run()
+    app.run(port=args.port)

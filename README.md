@@ -21,7 +21,7 @@ This will run deckmaster in dev mode, and will serve the site as defined in
 Here's some more detail on the CLI options for deckmaster:
 
 	$ deckmaster --help
-	usage: deckmaster [-h] [--no-debug] [--workdir [WORKDIR]]
+	usage: deckmaster [-h] [--no-debug] [--workdir [WORKDIR]] [--port [PORT]]
 
 	Serve bower packages and local assets.
 
@@ -32,6 +32,8 @@ Here's some more detail on the CLI options for deckmaster:
 	  --workdir [WORKDIR], -w [WORKDIR]
 	                        specify a working directory other than current
 	                        directory
+	  --port [PORT], -p [PORT]
+	                        port to serve from
 
 `site.json`
 =============
