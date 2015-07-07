@@ -3,6 +3,9 @@
 import os
 import json
 import subprocess
+from functools import partial
+
+from flask import Flask, render_template
 
 try:
     from app import app
@@ -43,14 +46,19 @@ def process_script(script):
         return check_pkg(script['bower'])
     return script
 
+def process_route(route):
+    retval = {}
+    retval['scripts'] = [process_script(x) for x in route['scripts']]
+    retval['styles'] = route['styles']
+    return lambda: render_template('html/base.html', **retval)
+
 def process_site():
     """Process `site.json` based on the config and CLI options."""
-    site = json.load(open('site.json'))
-    if '/' in site:
-        retval = {}
-        retval['scripts'] = [process_script(x) for x in site['/']['scripts']]
-        retval['styles'] = site['/']['styles']
-        return retval
+    try:
+        site = json.load(open('site.json'))
+    except IOError:
+        return []
     if 'scripts' in site:
-        site['scripts'] = [process_script(x) for x in site['scripts']]
-    return site
+        return [('/', 'index', process_route(site))]
+    elif '/' in site:
+        return [('/', 'index', process_route(site['/']))]

@@ -4,10 +4,9 @@ import os
 import argparse
 
 try:
-	from app import app
+	import app as deckmaster
 except ImportError:
-	from deckmaster import app
-	app = app.app
+	import deckmaster
 
 brk = """
 ********************************************************************************
@@ -43,16 +42,24 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    try:
+        workdir = os.path.abspath(args.workdir)
+    except AttributeError:
+        workdir = None
+
+    if workdir is not None:
+        os.chdir(workdir)
+        print working_directory_stmt % workdir
+
+    app = deckmaster.get_instance()
     app.config['DEBUG'] = args.debug
-    print brk
     if args.debug:
+        print brk
         print debug_log_stmt
     try:
         app.config['WORKDIR'] = os.path.abspath(args.workdir)
     except AttributeError:
         app.config['WORKDIR'] = None
-    if args.workdir is not None:
-        os.chdir(app.config['WORKDIR'])
-        print working_directory_stmt % app.config['WORKDIR']
+    
     print '\n'
     app.run(port=args.port)

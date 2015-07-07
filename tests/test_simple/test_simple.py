@@ -13,10 +13,10 @@ from bs4 import BeautifulSoup
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # This will now also be relative to the file, not the shell cwd.
-sys.path.append('..')
+sys.path.append('../..')
 
 from deckmaster import app
-app = app.app
+app = app.get_instance()
 
 # Clear the loaded components, but only once
 try:
@@ -37,6 +37,7 @@ class TestIndex(unittest.TestCase):
     def test_scripts_loaded(self):
     	"""Does the number of script elements match `site.json`?"""
     	cfg = json.load(open('site.json'))
+        print self.app.get('/').data
     	soup = self.get_index_soup()
     	self.assertEqual(
     		len(list(soup.find_all('script'))),
@@ -45,6 +46,7 @@ class TestIndex(unittest.TestCase):
 
     def test_scripts_200(self):
         """Are each of the scripts available?"""
+        print os.getcwd()
         soup = self.get_index_soup()
         for script in soup.find_all('script'):
             self.app.get(script['src'])

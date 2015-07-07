@@ -6,6 +6,7 @@ a development server and deployment compiler (planned).
 Installation
 ==============
 
+	npm install -g bower
 	pip install deckmaster
 
 Usage

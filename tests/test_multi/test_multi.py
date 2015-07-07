@@ -1,4 +1,4 @@
-"""Test the basic `site.json` configuration of an `index.html` route."""
+"""Test the routed `site.json`."""
 
 import os
 import shutil
@@ -13,10 +13,10 @@ from bs4 import BeautifulSoup
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # This will now also be relative to the file, not the shell cwd.
-sys.path.append('..')
+sys.path.append('../..')
 
 from deckmaster import app
-app = app.app
+app = app.get_instance()
 
 # Clear the loaded components, but only once
 try:
@@ -24,8 +24,8 @@ try:
 except OSError:
     pass
 
-class TestIndex(unittest.TestCase):
-    """Test the basic dynamic generation of the index page."""
+class TestMulti(unittest.TestCase):
+    """Test the basic dynamic generation of multiple routes."""
 
     def setUp(self):
         app.config['TESTING'] = True
@@ -35,8 +35,9 @@ class TestIndex(unittest.TestCase):
     	return BeautifulSoup(self.app.get('/').data, 'html.parser')
 
     def test_scripts_loaded(self):
-    	"""Does the number of script elements match `site.json`?"""
-    	cfg = json.load(open('site.json'))
+    	"""Does the number of script elements match the route in `site.json`?"""
+        cfg = json.load(open('site.json'))
+        print cfg
     	soup = self.get_index_soup()
     	self.assertEqual(
     		len(list(soup.find_all('script'))),
@@ -44,7 +45,7 @@ class TestIndex(unittest.TestCase):
     	)
 
     def test_scripts_200(self):
-        """Are each of the scripts available?"""
+        """Are each of the scripts for this route available?"""
         soup = self.get_index_soup()
         for script in soup.find_all('script'):
             self.app.get(script['src'])
