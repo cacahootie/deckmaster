@@ -37,12 +37,8 @@ class TestIndex(unittest.TestCase):
     def test_scripts_loaded(self):
     	"""Does the number of script elements match `site.json`?"""
     	cfg = json.load(open('site.json'))
-        print self.app.get('/').data
     	soup = self.get_index_soup()
-    	self.assertEqual(
-    		len(list(soup.find_all('script'))),
-    		len(cfg['scripts'])
-    	)
+    	self.assertEqual(len(list(soup.find_all('script'))), 3)
 
     def test_scripts_200(self):
         """Are each of the scripts available?"""

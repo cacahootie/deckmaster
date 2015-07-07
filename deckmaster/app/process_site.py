@@ -21,15 +21,13 @@ def get_pkg_dir(package):
 
 def get_pkg_main(package):
     """Check `package.json` then `bower.json` for the main included file."""
-    try:
-        pkg = json.load(
-            open(os.path.join(get_pkg_dir(package), 'package.json'))
-        )
-    except IOError:
-        pkg = json.load(
-            open(os.path.join(get_pkg_dir(package), '.bower.json'))
-        )
-    return os.path.join(get_pkg_dir(package), pkg['main'])
+    pkg = json.load(
+        open(os.path.join(get_pkg_dir(package), 'bower.json'))
+    )
+    if isinstance(pkg['main'],list):
+        return [os.path.join(get_pkg_dir(package), p) for p in pkg['main']]
+    else:
+        return os.path.join(get_pkg_dir(package), pkg['main'])
 
 def check_pkg(package):
     """CHeck if the package exists, if not use bower to install."""
@@ -38,19 +36,55 @@ def check_pkg(package):
             bower_str % (component_dir, package),
             shell = True
         )
-    return get_pkg_main(package)
+    return True
 
-def process_script(script):
+def script_or_style(path):
+    if path.endswith('js'):
+        return 'script'
+    elif path.endswith('css'):
+        return 'style'
+    else:
+        print "Script or style? " + path
+
+def process_bower(deps):
+    retval = {'styles':[], 'scripts':[]}
+    for pkg in deps.get('bower'):
+        check_pkg(pkg)
+        main =  get_pkg_main(pkg)
+        if isinstance(main,list):
+            pkgassets = {}
+            for path in reversed(main):
+                try:
+                    pkgassets[script_or_style(path)+'s'] = [path]
+                except TypeError:
+                    pass
+            retval['scripts'] += pkgassets['scripts']
+            retval['styles'] += pkgassets['styles']
+        else:
+            retval[script_or_style(main)+'s'].append(main)
+    return retval
+
+def process_local(deps):
+    retval = {'styles':[], 'scripts':[]}
+    for path in deps.get('local'):
+        retval[script_or_style(path)+'s'].append(path)
+    return retval
+
+def process_deps(deps):
     """Process script element in the config for local vs bower components."""
-    if 'bower' in script:
-        return check_pkg(script['bower'])
-    return script
+    local, bower = process_local(deps), process_bower(deps)
+    retval = {}
+    print local,bower
+    for tag in local:
+        retval[tag] = local[tag] + bower[tag]
+    print retval
+    return retval
 
 def process_route(route):
-    retval = {}
-    retval['scripts'] = [process_script(x) for x in route['scripts']]
-    retval['styles'] = route['styles']
-    return lambda: render_template('html/base.html', **retval)
+    return lambda: \
+        render_template(
+            'html/base.html', **process_deps(route['deps'])
+        )
 
 def process_site():
     """Process `site.json` based on the config and CLI options."""
@@ -58,7 +92,7 @@ def process_site():
         site = json.load(open('site.json'))
     except IOError:
         return []
-    if 'scripts' in site:
+    if 'deps' in site:
         return [('/', 'index', process_route(site))]
     elif '/' in site:
         return [('/', 'index', process_route(site['/']))]
