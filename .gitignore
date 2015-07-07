@@ -61,4 +61,6 @@ target/
 test/static/components
 tests/static/components
 
+*/static/components
+
 *.sublime-*
