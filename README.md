@@ -3,6 +3,13 @@
 Provide compiled HTML, static assets and templated cards from `site.json`, with
 a development server and deployment compiler (planned).
 
+Prerequisites
+==============
+
+I'll leave you to install node/npm as well as python/pip on your own.  Assuming
+you have those things worked out, the installation of bower and deckmaster below
+should proceed without issue.
+
 Installation
 ==============
 
