@@ -46,6 +46,9 @@ Here's some more detail on the CLI options for deckmaster:
 `site.json`
 =============
 
+Simple Case
+------------
+
 Provides the structure of the assets served by deckmaster.
 
 Simple example, serves only an index route of styles and scripts:
@@ -83,3 +86,57 @@ Which results in the following '/' route, served by flask:
     </body>
 </html>
 ```
+
+Multiple Routes
+----------------
+
+Of course, when is life ever as simple as one single index route?  Rarely.
+deckmaster of course supports multiple routes, defined as such:
+
+```json
+{
+    "/":{
+        "deps":{
+            "local":[ 
+                "static/script.js",
+                "static/style.css"
+            ],
+            "bower":[
+                "d3",
+                "leaflet"
+            ]
+        }
+    },
+    "/a":{
+        "deps":{
+            "bower":[
+                "jquery",
+                "underscore"
+            ]
+        }
+    },
+    "/b":{
+        "deps":{
+            "local":[
+                "static/script.js",
+                "static/style.css"
+            ]
+        }
+    }
+}
+```
+
+Which will produce html at the respective paths according to the packages
+included.
+
+Bower Package --> Script Tag
+=============================
+
+Each `bower.json` for a given package provides a `main` value, which according
+to the bower specification, should include at most one file of each file type
+which serves as an entry point to the package, be it `.js` or `.css`, `.scss` or
+`.whocaresicertainlydont`.  The problem is that this isn't enforced, so 
+deckmaster resolves the issue by allowing one script and one style from each
+package, which is either the single file provided, or in the case of an array,
+it prefers the first file of each type specified.  deckmaster currently only
+handles styles and scripts of type `.css` and `.js`.
