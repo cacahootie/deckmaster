@@ -129,8 +129,8 @@ deckmaster of course supports multiple routes, defined as such:
 Which will produce html at the respective paths according to the packages
 included.
 
-Bower Package --> Script Tag
-=============================
+Bower Package --> HTML Tag
+======================================
 
 Each `bower.json` for a given package provides a `main` value, which according
 to the bower specification, should include at most one file of each file type
