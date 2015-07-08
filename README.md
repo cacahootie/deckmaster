@@ -71,24 +71,15 @@ Which results in the following '/' route, served by flask:
 <!DOCTYPE html>
 <html>
     <head>
-            <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <title>title</title>
-
-
-    <link rel="stylesheet" href="static/style.css" />
-
-    <link rel="stylesheet" href="static/components/leaflet/dist/leaflet.css" />
-
+        <link rel="stylesheet" href="static/style.css" />
+        <link rel="stylesheet" href="static/components/leaflet/dist/leaflet.css" />
     </head>
     <body>
-        
-
-    <script src="static/script.js" type="text/javascript"></script>
-
-    <script src="static/components/d3/d3.js" type="text/javascript"></script>
-
-    <script src="static/components/leaflet/dist/leaflet.js" type="text/javascript"></script>
-
+        <script src="static/script.js" type="text/javascript"></script>
+        <script src="static/components/d3/d3.js" type="text/javascript"></script>
+        <script src="static/components/leaflet/dist/leaflet.js" type="text/javascript"></script>
     </body>
 </html>
 ```
