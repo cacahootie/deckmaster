@@ -39,10 +39,7 @@ class TestMulti(unittest.TestCase):
         cfg = json.load(open('site.json'))
         print cfg
     	soup = self.get_index_soup()
-    	self.assertEqual(
-    		len(list(soup.find_all('script'))),
-    		len(cfg['/']['scripts'])
-    	)
+    	self.assertEqual(len(list(soup.find_all('script'))),3)
 
     def test_scripts_200(self):
         """Are each of the scripts for this route available?"""

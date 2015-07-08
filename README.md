@@ -52,14 +52,15 @@ Simple example, serves only an index route of styles and scripts:
 
 ```javascript	
 {
-    "styles": [
-        "static/style.css"
-    ],
-    "scripts": [
-        "static/script.js",
-        {"bower":"d3"},
-        {"bower":"leaflet-css"},
-        {"bower":"leaflet"}
-    ]
+    "deps":{
+    	"local":[ 
+    		"static/script.js",
+    		"static/style.css"
+    	],
+        "bower":[
+    		"d3",
+			"leaflet"
+		]
+	}
 }
 ```
