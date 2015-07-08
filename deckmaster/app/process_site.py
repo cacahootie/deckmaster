@@ -48,36 +48,40 @@ def script_or_style(path):
 
 def process_bower(deps):
     retval = {'styles':[], 'scripts':[]}
-    for pkg in deps.get('bower'):
-        check_pkg(pkg)
-        main =  get_pkg_main(pkg)
-        if isinstance(main,list):
-            pkgassets = {}
-            for path in reversed(main):
-                try:
-                    pkgassets[script_or_style(path)+'s'] = [path]
-                except TypeError:
-                    pass
-            retval['scripts'] += pkgassets['scripts']
-            retval['styles'] += pkgassets['styles']
-        else:
-            retval[script_or_style(main)+'s'].append(main)
+    try:
+        for pkg in deps['bower']:
+            check_pkg(pkg)
+            main =  get_pkg_main(pkg)
+            if isinstance(main,list):
+                pkgassets = {}
+                for path in reversed(main):
+                    try:
+                        pkgassets[script_or_style(path)+'s'] = [path]
+                    except TypeError:
+                        pass
+                retval['scripts'] += pkgassets['scripts']
+                retval['styles'] += pkgassets['styles']
+            else:
+                retval[script_or_style(main)+'s'].append(main)
+    except KeyError:
+        pass
     return retval
 
 def process_local(deps):
     retval = {'styles':[], 'scripts':[]}
-    for path in deps.get('local'):
-        retval[script_or_style(path)+'s'].append(path)
+    try:
+        for path in deps['local']:
+            retval[script_or_style(path)+'s'].append(path)
+    except KeyError:
+        pass
     return retval
 
 def process_deps(deps):
     """Process script element in the config for local vs bower components."""
     local, bower = process_local(deps), process_bower(deps)
     retval = {}
-    print local,bower
     for tag in local:
         retval[tag] = local[tag] + bower[tag]
-    print retval
     return retval
 
 def process_route(route):
@@ -94,5 +98,7 @@ def process_site():
         return []
     if 'deps' in site:
         return [('/', 'index', process_route(site))]
-    elif '/' in site:
-        return [('/', 'index', process_route(site['/']))]
+    return [
+        (rt, 'index' if rt=='/' else rt, process_route(site[rt]))
+        for rt in site
+    ]

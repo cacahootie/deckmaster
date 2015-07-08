@@ -10,5 +10,21 @@
 				"leaflet"
 			]
 		}
+	},
+	"/a":{
+		"deps":{
+			"bower":[
+				"jquery",
+				"underscore"
+			]
+		}
+	},
+	"/b":{
+		"deps":{
+			"local":[
+				"static/script.js",
+				"static/style.css"
+			]
+		}
 	}
 }
