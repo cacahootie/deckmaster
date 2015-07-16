@@ -1,4 +1,4 @@
-# Byte-compiled / optimized / DLL files
+tests/test_gitloader/static/components/# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 
@@ -60,5 +60,6 @@ target/
 
 tests/test_simple/static/components
 tests/test_multi/static/components
+tests/test_gitloader/static/components
 
 *.sublime-*
