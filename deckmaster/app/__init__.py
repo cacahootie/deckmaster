@@ -5,6 +5,7 @@ import json
 
 from flask import Flask
 
+from gitloader import GitLoader
 
 app = None
 
