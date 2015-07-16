@@ -1,0 +1,12 @@
+{
+    "deps":{
+    	"local":[ 
+    		"static/script.js",
+    		"static/style.css"
+    	],
+        "bower":[
+    		"d3",
+			"leaflet"
+		]
+	}
+}
