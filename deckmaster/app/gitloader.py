@@ -22,7 +22,8 @@ class GitLoader(jinja2.BaseLoader):
         if '@' in request.url:
             src = git_show(template, request.path.rsplit('@',1)[1])
             return src, template, lambda: True
-        return open(template).read(), template, lambda: False
+        templpath = os.path.join(current_app.template_folder, template)
+        return open(templpath).read(), template, lambda: False
 
 
 def git_static(path, revid):

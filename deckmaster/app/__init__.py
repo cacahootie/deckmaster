@@ -12,6 +12,10 @@ app = None
 
 class FlaskGit(Flask):
 
+	def __init__(self, *args, **kwargs):		
+		Flask.__init__(self, *args, **kwargs)
+		self.jinja_loader = GitLoader()
+
 	def send_static_file(self,filename):
 		query_string = unquote(request.query_string)
 		try:
@@ -30,6 +34,11 @@ def get_instance():
 	    template_folder=os.path.join(
 	        os.path.abspath(os.path.dirname(__file__)),'templates')
 	)
+
+	app.template_folder = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)),
+        'templates'
+    )
 	
 	from process_site import process_site
 
