@@ -11,10 +11,8 @@ from flask import request, current_app
 
 def git_show(base,revid):
     """Git show the base/revid."""
-    return check_output(
-        ['git show %s:%s ' % (revid, base)],
-        shell=True
-    )
+    return check_output(['git show %s:%s ' % (revid, base)], shell=True)
+
 
 class GitLoader(jinja2.BaseLoader):
     """Load a template from a specific git revision."""
