@@ -28,7 +28,7 @@ class TestGitLoader(unittest.TestCase):
             src, templ, reload = GitLoader().get_source(
                 None, os.path.join(self.basedir, self.templdir, 'test.txt')
             )
-            self.assertEqual(src, '{{ burgers }}\n{{ fries }}\n')
+            self.assertEqual(src, '{{ burgers }}\n{{ fries }}\ngeorge\n')
 
     def test_git_load(self):
         """Can the loader get a template at a specific revision?"""
