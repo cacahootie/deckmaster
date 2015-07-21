@@ -43,9 +43,13 @@ class TestGitView(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()
 
-    def test_view_at_revision(self):
-        self.app.get('/')
-        self.app.get('/static/script.js')
+    def test_static_at_revision(self):
+        """Ensure the current version and specified commit do not match."""
+        expected = open('test_data/22697e.css').read()
+        actual = self.app.get('/22697e00bc51209ba77244fdfd507b88b72249c3/static/style.css').data
+        self.assertEqual(expected,actual)
+        current = self.app.get('/static/style.css').data
+        self.assertNotEqual(actual, current)
 
 
 if __name__ == '__main__':

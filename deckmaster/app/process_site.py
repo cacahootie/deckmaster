@@ -5,7 +5,7 @@ import json
 import subprocess
 from functools import partial
 
-from flask import Flask, render_template
+from flask import Flask, render_template, g
 
 try:
     from app import app
@@ -84,11 +84,15 @@ def process_deps(deps):
         retval[tag] = local[tag] + bower[tag]
     return retval
 
+
 def process_route(route):
-    return lambda: \
-        render_template(
+    def route_handler(revid = None):
+        g.revid = revid
+        return render_template(
             'html/base.html', **process_deps(route['deps'])
         )
+    return route_handler
+        
 
 def process_site():
     """Process `site.json` based on the config and CLI options."""
@@ -97,8 +101,18 @@ def process_site():
     except IOError:
         return []
     if 'deps' in site:
-        return [('/', 'index', process_route(site))]
-    return [
-        (rt, 'index' if rt=='/' else rt, process_route(site[rt]))
-        for rt in site
-    ]
+        return [
+            ('/', 'index', process_route(site)),
+            ('/<revid>/', 'index_revid', process_route(site)),
+        ]
+    retval = []
+    for rt in site:
+        retval.append((rt, 'index' if rt=='/' else rt, process_route(site[rt])))
+        retval.append(
+            (
+                '/<revid>' + rt,
+                'index_revid' if rt=='/' else rt + '_revid',
+                 process_route(site[rt])
+            )
+        )
+    return retval
