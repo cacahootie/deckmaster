@@ -5,7 +5,9 @@ import json
 import subprocess
 from functools import partial
 
-from flask import Flask, render_template, g
+from flask import Flask, render_template, g, redirect, current_app
+
+from gitloader import git_show
 
 try:
     from app import app
@@ -76,6 +78,7 @@ def process_local(deps):
         pass
     return retval
 
+
 def process_deps(deps):
     """Process script element in the config for local vs bower components."""
     local, bower = process_local(deps), process_bower(deps)
@@ -86,33 +89,43 @@ def process_deps(deps):
 
 
 def process_route(route):
-    def route_handler(revid = None):
+    def route_handler(revid = None, path = None):
         g.revid = revid
-        return render_template(
-            'html/base.html', **process_deps(route['deps'])
-        )
+        try:
+            return render_template(
+                'html/base.html', **process_deps(route['deps'])
+            )
+        except AttributeError:
+            return 'Not Found', 404
     return route_handler
-        
 
-def process_site():
+
+def lazy_router(revid, path = None):
+    g.revid = revid
+    if path is None:
+        path = ''
+    if not path.startswith('/'):
+        path = '/' + path
+    cfgstr = git_show('./site.json', revid)
+    return process_route(json.loads(cfgstr)[path])(revid, path)
+
+
+def process_site(site = None, revid = None):
     """Process `site.json` based on the config and CLI options."""
-    try:
-        site = json.load(open('site.json'))
-    except IOError:
-        return []
+    if site is None:
+        try:
+            site = json.load(open('site.json'))
+        except IOError:
+            return []
     if 'deps' in site:
         return [
             ('/', 'index', process_route(site)),
             ('/<revid>/', 'index_revid', process_route(site)),
         ]
-    retval = []
+    retval = [
+        ('/<revid>/', 'revid_lazy_index', lazy_router),
+        ('/<revid>/<path:path>', 'revid_lazy', lazy_router),
+    ]
     for rt in site:
         retval.append((rt, 'index' if rt=='/' else rt, process_route(site[rt])))
-        retval.append(
-            (
-                '/<revid>' + rt,
-                'index_revid' if rt=='/' else rt + '_revid',
-                 process_route(site[rt])
-            )
-        )
     return retval
