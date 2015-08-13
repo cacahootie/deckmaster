@@ -1,6 +1,6 @@
 """Jinja2-Git Template Loader"""
 
-from subprocess import check_output
+from subprocess import check_output, CalledProcessError
 import os
 import json
 from mimetypes import guess_type
@@ -14,7 +14,11 @@ def git_show(base,revid):
     """Git show the base/revid."""
     if revid.startswith('@'):
         revid = revid[1:]
-    return check_output(['git show %s:%s ' % (revid, base)], shell=True)
+    try:
+        return check_output(['git show %s:%s ' % (revid, base)], shell=True)
+    except CalledProcessError as e:
+        print e
+        return None
 
 
 class GitLoader(jinja2.BaseLoader):
@@ -40,6 +44,7 @@ def git_static(path, revid):
     if path.startswith(current_app.config['basedir']):
         path = path[ len(current_app.config['basedir']) + 1 : ]
     return git_show(path, revid), 200, {'Content-Type': guess_type(path)}
+
 
 def git_static_nested(path, revid):
     if path.startswith('components'):
