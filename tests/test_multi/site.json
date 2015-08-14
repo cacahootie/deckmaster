@@ -3,7 +3,7 @@
 	    "deps":{
 	    	"local":[ 
 	    		"static/script.js",
-	    		"static/style.css"
+	    		"static/new_style.css"
 	    	],
 	        "bower":[
 	    		"d3",
