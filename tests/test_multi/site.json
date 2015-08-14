@@ -7,7 +7,8 @@
 	    	],
 	        "bower":[
 	    		"d3",
-				"leaflet"
+				"leaflet",
+				"moment"
 			]
 		}
 	},
@@ -15,7 +16,8 @@
 		"deps":{
 			"bower":[
 				"jquery",
-				"underscore"
+				"underscore",
+				"skrollr"
 			]
 		}
 	},

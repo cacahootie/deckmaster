@@ -38,9 +38,9 @@ class TestMulti(unittest.TestCase):
     	"""Does the number of scripts match the spec for each route?"""
         cfg = json.load(open('site.json'))
     	soup = self.get_soup('/')
-    	self.assertEqual(len(list(soup.find_all('script'))),3)
+    	self.assertEqual(len(list(soup.find_all('script'))),4)
         soup = self.get_soup('/a')
-        self.assertEqual(len(list(soup.find_all('script'))),2)
+        self.assertEqual(len(list(soup.find_all('script'))),3)
         soup = self.get_soup('/b')
         self.assertEqual(len(list(soup.find_all('script'))),1)
 
