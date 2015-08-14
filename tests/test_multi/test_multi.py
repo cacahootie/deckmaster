@@ -38,10 +38,21 @@ class TestMulti(unittest.TestCase):
     	"""Does the number of scripts match the spec for each route?"""
         cfg = json.load(open('site.json'))
     	soup = self.get_soup('/')
-    	self.assertEqual(len(list(soup.find_all('script'))),3)
+    	self.assertEqual(len(list(soup.find_all('script'))),4)
         soup = self.get_soup('/a')
-        self.assertEqual(len(list(soup.find_all('script'))),2)
+        self.assertEqual(len(list(soup.find_all('script'))),3)
         soup = self.get_soup('/b')
+        self.assertEqual(len(list(soup.find_all('script'))),1)
+
+    def test_scripts_loaded_rev(self):
+        """Does the number of scripts match the spec for each route at a rev?"""
+        cfg = json.load(open('site.json'))
+        revbase = '/22697e00bc51209ba77244fdfd507b88b72249c3'
+        soup = self.get_soup(revbase + '/')
+        self.assertEqual(len(list(soup.find_all('script'))),3)
+        soup = self.get_soup(revbase + '/a')
+        self.assertEqual(len(list(soup.find_all('script'))),2)
+        soup = self.get_soup(revbase + '/b')
         self.assertEqual(len(list(soup.find_all('script'))),1)
 
     def test_scripts_200(self):
