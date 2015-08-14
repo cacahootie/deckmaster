@@ -28,5 +28,8 @@
 				"static/style.css"
 			]
 		}
+	},
+	"/c":{
+		"view":"views.c"
 	}
 }

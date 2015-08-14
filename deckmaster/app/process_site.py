@@ -4,6 +4,8 @@ import os
 import json
 import subprocess
 from functools import partial
+import importlib
+import sys
 
 from flask import Flask, render_template, g, redirect, current_app
 
@@ -13,6 +15,8 @@ try:
     from app import app
 except ImportError:
     from deckmaster.app import app
+
+sys.path.append('.')
 
 component_dir = 'static/components'
 bower_str = 'bower install --config.directory="%s" %s > /dev/null'
@@ -89,14 +93,21 @@ def process_deps(deps):
 
 
 def process_route(route):
+    if not route.get('view'):
+        def route_handler(revid = None, path = None):
+            g.revid = revid
+            try:
+                return render_template(
+                    'html/base.html', **process_deps(route['deps'])
+                )
+            except AttributeError:
+                return 'Not Found', 404
+        return route_handler
+    mname, fname = route['view'].rsplit('.', 1)
+    module = importlib.import_module(mname)
+    viewfunc = getattr(module, fname)
     def route_handler(revid = None, path = None):
-        g.revid = revid
-        try:
-            return render_template(
-                'html/base.html', **process_deps(route['deps'])
-            )
-        except AttributeError:
-            return 'Not Found', 404
+        return viewfunc()
     return route_handler
 
 
@@ -123,6 +134,7 @@ def process_site(site = None, revid = None):
             ('/<revid>/', 'index_revid', process_route(site)),
         ]
     retval = [
+        ('/favicon.ico', 'favicon', lambda: ''),
         ('/<revid>/', 'revid_lazy_index', lazy_router),
         ('/<revid>/<path:path>', 'revid_lazy', lazy_router),
     ]

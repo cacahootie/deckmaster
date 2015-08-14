@@ -62,6 +62,14 @@ class TestMulti(unittest.TestCase):
             for script in soup.find_all('script'):
                 self.app.get(script['src'])
 
+    def test_view(self):
+        """Can we get a dynamic view?"""
+        self.assertEqual(self.app.get('/c').data,'Narflbruger')
+        self.assertEqual(self.app.get(
+            '/c6157dd4e4d871afd56e40c165142f84ec6555e3/c').data,'Narflbruger'
+        )
+        
+
 
 if __name__ == '__main__':
     unittest.main()
