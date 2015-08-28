@@ -10,6 +10,7 @@ import sys
 from flask import Flask, render_template, g, redirect, current_app
 
 from gitloader import git_show
+from import_code import import_code
 
 try:
     from app import app
@@ -107,6 +108,10 @@ def process_route(route):
     module = importlib.import_module(mname)
     viewfunc = getattr(module, fname)
     def route_handler(revid = None, path = None):
+        if revid is not None:
+            codestr = git_show('./views.py', revid)
+            mod = import_code(codestr, mname)
+            return getattr(mod,fname)()
         return viewfunc()
     return route_handler
 
@@ -118,7 +123,10 @@ def lazy_router(revid, path = None):
     if not path.startswith('/'):
         path = '/' + path
     cfgstr = git_show('./site.json', revid)
-    return process_route(json.loads(cfgstr)[path])(revid, path)
+    try:
+        return process_route(json.loads(cfgstr)[path])(revid, path)
+    except KeyError:
+        print cfgstr
 
 
 def process_site(site = None, revid = None):

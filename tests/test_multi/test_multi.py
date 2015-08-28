@@ -64,9 +64,12 @@ class TestMulti(unittest.TestCase):
 
     def test_view(self):
         """Can we get a dynamic view?"""
-        self.assertEqual(self.app.get('/c').data,'Narflbruger')
+        self.assertEqual(self.app.get('/c').data,'HappyFilmore')
+
+    def test_git_view(self):
+        """Can we get a dynamic view from git?"""
         self.assertEqual(self.app.get(
-            '/c6157dd4e4d871afd56e40c165142f84ec6555e3/c').data,'Narflbruger'
+            '/ac9a2c9861d174b39ec810c794fb2dbb69f10acb/c').data,'Narflbruger'
         )
         
 
