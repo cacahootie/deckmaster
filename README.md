@@ -99,11 +99,12 @@ deckmaster of course supports multiple routes, defined as such:
         "deps":{
             "local":[ 
                 "static/script.js",
-                "static/style.css"
+                "static/new_style.css"
             ],
             "bower":[
                 "d3",
-                "leaflet"
+                "leaflet",
+                "moment"
             ]
         }
     },
@@ -111,7 +112,8 @@ deckmaster of course supports multiple routes, defined as such:
         "deps":{
             "bower":[
                 "jquery",
-                "underscore"
+                "underscore",
+                "skrollr"
             ]
         }
     },
@@ -122,6 +124,9 @@ deckmaster of course supports multiple routes, defined as such:
                 "static/style.css"
             ]
         }
+    },
+    "/c":{
+        "view":"views.c" # References the function `c` in ./views.py
     }
 }
 ```
